@@ -1,0 +1,10 @@
+default:
+  suites:
+    application:
+      autowire: true
+      contexts:
+        - Tkotosz\Acceptance\Context\BehatConfigurationVerificationContext
+      services: '@bex.magento2_extension.service_container'
+  
+  extensions:
+    Bex\Behat\Magento2Extension: ~

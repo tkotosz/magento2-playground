@@ -1,0 +1,95 @@
+{
+    "name": "inviqa/magento2-playground",
+    "type": "project",
+    "description": "Magento 2 Playground",
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.2",
+        "composer/composer": "@alpha",
+        "magento/product-community-edition": "2.3.4"
+    },
+    "require-dev": {
+        "behat/behat": "^3.5",
+        "bex/behat-magento2-extension": "^2.0",
+        "ergebnis/composer-normalize": "^2.3",
+        "inviqa/phpstan-magento2": "^0.1",
+        "localheinz/phpstan-rules": "dev-master",
+        "nagno/phpspec-bootstrap-magento2": "^3.1",
+        "pepakriz/phpstan-exception-rules": "^0.10.0",
+        "phpmd/phpmd": "^2.7",
+        "phpspec/phpspec": "^6.0",
+        "phpstan/extension-installer": "^1.0",
+        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan-deprecation-rules": "^0.12",
+        "phpstan/phpstan-strict-rules": "^0.12",
+        "phpunit/phpunit": "^8.4",
+        "slevomat/coding-standard": "^6.0",
+        "squizlabs/php_codesniffer": "^3.5",
+        "vimeo/psalm": "^3.7"
+    },
+    "config": {
+        "bin-dir": "bin",
+        "sort-packages": true
+    },
+    "extra": {
+        "magento-force": "override"
+    },
+    "autoload": {
+        "psr-4": {
+            "Magento\\Framework\\": "lib/internal/Magento/Framework/",
+            "Magento\\Setup\\": "setup/src/Magento/Setup/",
+            "Magento\\": "app/code/Magento/",
+            "Zend\\Mvc\\Controller\\": "setup/src/Zend/Mvc/Controller/",
+            "Tkotosz\\": "src/Tkotosz"
+        },
+        "files": [
+            "app/etc/NonComposerComponentRegistration.php",
+            "app/etc/InviqaNonComposerComponentRegistration.php"
+        ],
+        "exclude-from-classmap": [
+            "**/dev/**",
+            "**/update/**",
+            "**/Test/**"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Magento\\Sniffs\\": "dev/tests/static/framework/Magento/Sniffs/",
+            "Magento\\Tools\\": "dev/tools/Magento/Tools/",
+            "Magento\\Tools\\Sanity\\": "dev/build/publication/sanity/Magento/Tools/Sanity/",
+            "Magento\\TestFramework\\Inspection\\": "dev/tests/static/framework/Magento/TestFramework/Inspection/",
+            "Magento\\TestFramework\\Utility\\": "dev/tests/static/framework/Magento/TestFramework/Utility/",
+            "Tkotosz\\Acceptance\\": "features/bootstrap"
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://repo.magento.com/"
+        }
+    ],
+    "minimum-stability": "stable",
+    "scripts": {
+        "test": [
+            "@test-quality",
+            "@test-unit",
+            "@test-acceptance"
+        ],
+        "test-quality": [
+            "find src/ pub/ -type f \\( -name '*.phtml' -o -name '*.php' \\) | xargs -n 1 -P 8 -i php -l {} | grep -v 'No syntax errors detected' || echo 'OK'",
+            "phpcs -p -v",
+            "phpstan analyse",
+            "psalm",
+            "phpmd ./src text ./phpmd.xml"
+        ],
+        "test-unit": [
+            "phpspec run"
+        ],
+        "test-acceptance": [
+            "behat"
+        ],
+        "fix-code": [
+            "phpcbf -p"
+        ]
+    }
+}

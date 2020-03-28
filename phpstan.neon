@@ -1,0 +1,17 @@
+includes:
+    - vendor/inviqa/phpstan-magento2/extension.neon
+parameters:
+    level: max
+    paths:
+        - src
+    excludes_analyse:
+        - */src/**/registration.php
+    ignoreErrors:
+        - '/Unused @throws Symfony\\Component\\Console\\Exception\\LogicException annotation/'
+    ergebnis:
+        classesAllowedToBeExtended:
+            - RuntimeException
+            - Symfony\Component\Console\Command\Command
+    exceptionRules:
+        uncheckedExceptions:
+            - LogicException

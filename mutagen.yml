@@ -1,0 +1,30 @@
+forward:
+  magento2-playground:
+    source: "tcp:localhost:6060"
+    destination: "docker://magento2-playground-sync:tcp:localhost:6060"
+
+sync:
+  magento2-playground:
+    alpha: "."
+    beta: "docker://magento2-playground-sync/app"
+    mode: "two-way-resolved"
+    # Configuration for host file system as configured above for "alpha" key
+    configurationAlpha:
+      permissions:
+        defaultFileMode: 0644
+        defaultDirectoryMode: 0755
+    # Configuration for docker file system as configured above for "beta" key
+    configurationBeta:
+      permissions:
+        defaultOwner: "id:1000"
+        defaultGroup: "id:1000"
+        defaultFileMode: 0644
+        defaultDirectoryMode: 0755
+    symlink:
+      mode: posix-raw
+    ignore:
+      paths:
+        - /.docker-sync
+        - /.idea
+        - /.git
+        - /var
